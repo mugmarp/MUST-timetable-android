@@ -58,13 +58,6 @@ class TimetableRepository(
     suspend fun deleteNote(naturalKey: String) = dao.deleteNote(naturalKey)
 }
 
-class ETagStore(private val prefs: android.content.SharedPreferences) {
-    fun getEtag(programme: String) = prefs.getString("etag_$programme", null)
-    fun saveEtag(programme: String, etag: String) {
-        prefs.edit().putString("etag_$programme", etag).apply()
-    }
-}
-
 sealed class SyncResult {
     data class Success(val draftVersion: String) : SyncResult()
     object NotModified : SyncResult()

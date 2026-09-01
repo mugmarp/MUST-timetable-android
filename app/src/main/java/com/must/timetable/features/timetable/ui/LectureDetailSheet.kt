@@ -43,13 +43,13 @@ fun LectureDetailSheet(
                         selected = selectedAlarmMinutes == minutes,
                         onClick = { onAlarmToggle(minutes) },
                         label = { Text("${minutes}m before") },
-                        leadingIcon = { Icon(Icons.Default.Alarm, contentDescription = null) }
+                        leadingIcon = { Icon(Icons.Filled.Alarm, contentDescription = null) }
                     )
                 }
             }
             HorizontalDivider(Modifier.padding(vertical = 16.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Edit, contentDescription = null)
+                Icon(Icons.Filled.Edit, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
                 Text("Personal Notes", style = MaterialTheme.typography.titleMedium)
             }

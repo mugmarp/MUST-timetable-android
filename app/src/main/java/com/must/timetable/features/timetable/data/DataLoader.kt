@@ -2,6 +2,7 @@ package com.must.timetable.features.timetable.data
 
 import android.content.Context
 import com.must.timetable.core.database.AppDatabase
+import com.must.timetable.core.database.TimetableDao
 import com.must.timetable.features.timetable.domain.LectureNote
 import com.must.timetable.features.timetable.domain.TimetableEntry
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +24,7 @@ object DataLoader {
         }
 
         val db = AppDatabase.get(context)
-        val dao = db.timetableDao()
+        val dao: TimetableDao = db.timetableDao()
 
         loadTimetableFromAssets(context, dao)
         loadNotesFromAssets(context, dao)

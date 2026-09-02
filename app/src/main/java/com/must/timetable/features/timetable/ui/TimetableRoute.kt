@@ -19,7 +19,7 @@ import com.must.timetable.AppGraph
 fun TimetableRoute() {
     val context = LocalContext.current
     val vm: TimetableViewModel = viewModel(factory = AppGraph.factory(context))
-    val state by vm.uiState.collectAsStateWithLifecycle()
+    val state by vm.uiState.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Row(

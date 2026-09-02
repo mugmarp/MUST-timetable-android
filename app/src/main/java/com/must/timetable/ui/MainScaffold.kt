@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -57,7 +58,7 @@ fun MainScaffold() {
 @Composable
 fun PlaceholderRoute(name: String) {
     androidx.compose.foundation.layout.Column(
-        modifier = Modifier.padding(androidx.compose.ui.unit.Dp(16f))
+        modifier = Modifier.padding(16.dp)
     ) {
         Text(name, style = MaterialTheme.typography.headlineSmall)
         Text("Coming soon...")

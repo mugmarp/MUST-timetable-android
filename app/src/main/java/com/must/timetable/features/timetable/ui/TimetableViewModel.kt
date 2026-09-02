@@ -44,8 +44,20 @@ class TimetableViewModel(private val repo: TimetableRepository) : ViewModel() {
         entriesFlow,
         repo.getCustomEvents(),
         _selectedDay,
-        _selectedProgramme
-    ) { programmes, entries, events, day, programme ->
+        _selectedProgramme,
+        _syncStatus,
+        _isSyncing,
+        _draftVersion
+    ) { values ->
+        val programmes = values[0] as List<String>
+        val entries = values[1] as List<TimetableEntry>
+        val events = values[2] as List<CustomEvent>
+        val day = values[3] as String
+        val programme = values[4] as String
+        val syncStatus = values[5] as String
+        val isSyncing = values[6] as Boolean
+        val draft = values[7] as String
+
         val today = TimeUtil.todayName()
         val effDay = if (day.isEmpty()) today else day
         val lectures = entries.filter { it.dayOfWeek == effDay }.map { DayItem.Lecture(it) }
@@ -66,10 +78,11 @@ class TimetableViewModel(private val repo: TimetableRepository) : ViewModel() {
             today = today,
             dayItems = items,
             allEntries = entries,
-            allEvents = events
+            allEvents = events,
+            syncStatus = syncStatus,
+            isSyncing = isSyncing,
+            draftVersion = draft
         )
-    }.combine(_syncStatus, _isSyncing, _draftVersion) { state, status, syncing, draft ->
-        state.copy(syncStatus = status, isSyncing = syncing, draftVersion = draft)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), TimetableUiState())
 
     fun selectDay(day: String) { _selectedDay.value = day }

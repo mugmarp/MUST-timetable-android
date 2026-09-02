@@ -2,16 +2,12 @@ package com.must.timetable.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -19,15 +15,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.must.timetable.features.timetable.ui.TimetableRoute
-import com.must.timetable.features.timetable.ui.SettingsRoute
 
 private data class Tab(val route: String, val label: String, val icon: ImageVector)
 
 private val TABS = listOf(
     Tab("timetable", "Timetable", Icons.Default.Today),
-    Tab("calendar", "Calendar", Icons.Default.CalendarMonth),
-    Tab("notes", "Notes", Icons.Default.Edit),
-    Tab("tasks", "Tasks", Icons.Default.CheckCircle),
     Tab("settings", "Settings", Icons.Default.Settings)
 )
 
@@ -54,13 +46,10 @@ fun MainScaffold() {
                 )
             }
         }
-    }) { padding ->
-        NavHost(navController, startDestination = "timetable", modifier = Modifier.padding(padding)) {
+    }) { paddingValues ->
+        NavHost(navController, startDestination = "timetable", modifier = Modifier.padding(paddingValues)) {
             composable("timetable") { TimetableRoute() }
-            composable("calendar") { PlaceholderRoute("Calendar") }
-            composable("notes") { PlaceholderRoute("Notes") }
-            composable("tasks") { PlaceholderRoute("Tasks") }
-            composable("settings") { SettingsRoute() }
+            composable("settings") { PlaceholderRoute("Settings") }
         }
     }
 }
@@ -68,7 +57,7 @@ fun MainScaffold() {
 @Composable
 fun PlaceholderRoute(name: String) {
     androidx.compose.foundation.layout.Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(androidx.compose.ui.unit.Dp(16f))
     ) {
         Text(name, style = MaterialTheme.typography.headlineSmall)
         Text("Coming soon...")

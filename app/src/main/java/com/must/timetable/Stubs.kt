@@ -1,11 +1,9 @@
 package com.must.timetable
 
-import android.content.SharedPreferences
 import com.must.timetable.core.network.ApiService
 import com.must.timetable.core.network.ScheduleResponse
 import com.must.timetable.core.network.ScheduleMetadata
 import com.must.timetable.features.timetable.data.ETagStore
-import com.must.timetable.features.timetable.data.SharedPrefsEtagStore
 import retrofit2.Response
 
 class StubApiService : ApiService {
@@ -34,4 +32,7 @@ class StubEtagStore : ETagStore {
     override fun saveEtag(programme: String, etag: String) {
         map[programme] = etag
     }
+    override fun getProgramme(): String = "MBR I"
+    override fun saveProgramme(programme: String) {}
+    override var welcomed: Boolean = false
 }

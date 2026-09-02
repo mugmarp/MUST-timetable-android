@@ -85,7 +85,6 @@ class TimetableRepository(
     suspend fun saveAssignment(assignment: Assignment): Long = assignmentDao.upsert(assignment)
     suspend fun deleteAssignment(id: Long) = assignmentDao.delete(id)
 
-    /** Returns timetable classes that overlap the proposed event window. */
     suspend fun checkEventConflict(
         programme: String, day: String, start: String, end: String?
     ): List<TimetableEntry> {
@@ -98,18 +97,6 @@ class TimetableRepository(
             TimeUtil.rangesOverlap(evS, evE, cs, ce)
         }
     }
-}
-
-class ETagStore(private val prefs: android.content.SharedPreferences) {
-    fun getEtag(programme: String) = prefs.getString("etag_$programme", null)
-    fun saveEtag(programme: String, etag: String) {
-        prefs.edit().putString("etag_$programme", etag).apply()
-    }
-    fun getProgramme() = prefs.getString("programme", "MBR I") ?: "MBR I"
-    fun saveProgramme(programme: String) = prefs.edit().putString("programme", programme).apply()
-    var welcomed: Boolean
-        get() = prefs.getBoolean("welcomed", false)
-        set(value) = prefs.edit().putBoolean("welcomed", value).apply()
 }
 
 sealed class SyncResult {

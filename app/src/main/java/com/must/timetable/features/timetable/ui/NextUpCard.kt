@@ -1,10 +1,5 @@
 package com.must.timetable.features.timetable.ui
 
-/**
- * Mirrors src/components/timetable/NextUpCard.jsx
- * Gradient card (accent -> violet-700), "NEXT UP" pill, countdown,
- * session label pill, big title, meta rows and a white chevron circle.
- */
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -31,6 +26,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.must.timetable.features.timetable.domain.TimetableEntry
 
+private fun formatCountdown(minutes: Int): String {
+    if (minutes <= 0) return "Starting now"
+    val d = minutes / 1440
+    val h = (minutes % 1440) / 60
+    val m = minutes % 60
+    return when {
+        d > 0 -> "in ${d}d ${h}h"
+        h > 0 -> "in ${h}h ${m}m"
+        else -> "in ${m}m"
+    }
+}
+
+private fun sessionStyle(entry: TimetableEntry): SessionStyle {
+    val type = entry.sessionType
+    return when (type?.uppercase()) {
+        "PRACTICAL", "LAB" -> SessionStyle("Practical", Color(0xFF2E7D32))
+        "CLINICAL" -> SessionStyle("Clinical", Color(0xFFF57C00))
+        "THEORY" -> SessionStyle("Theory", Color(0xFF1565C0))
+        else -> SessionStyle("Class", Color(0xFF757575))
+    }
+}
+
+private data class SessionStyle(val label: String, val color: Color)
+
 @Composable
 fun NextUpCard(entry: TimetableEntry, minutesUntil: Int, onClick: () -> Unit) {
     val accent = MaterialTheme.colorScheme.primary
@@ -46,7 +65,6 @@ fun NextUpCard(entry: TimetableEntry, minutesUntil: Int, onClick: () -> Unit) {
             .clickable { onClick() }
     ) {
         Column(Modifier.padding(20.dp)) {
-            // top row: NEXT UP pill + countdown
             Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
                 Text(
                     "NEXT UP",
@@ -60,14 +78,13 @@ fun NextUpCard(entry: TimetableEntry, minutesUntil: Int, onClick: () -> Unit) {
                         .padding(horizontal = 8.dp, vertical = 2.dp)
                 )
                 Text(
-                    formatCountdown(minutesUntil),
+                    text = formatCountdown(minutesUntil),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White
                 )
             }
             Spacer(Modifier.height(10.dp))
-            // course code + session label pill
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(entry.courseCode, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = white90)
                 Text(
@@ -83,13 +100,11 @@ fun NextUpCard(entry: TimetableEntry, minutesUntil: Int, onClick: () -> Unit) {
             Spacer(Modifier.height(4.dp))
             Text(entry.courseTitle, fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
             Spacer(Modifier.height(12.dp))
-            // meta: time + room
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 MetaWhite(Icons.Default.Schedule, "${entry.startTime} – ${entry.endTime}")
                 if (entry.room.isNotEmpty()) MetaWhite(Icons.Default.LocationOn, entry.room)
             }
             Spacer(Modifier.height(16.dp))
-            // bottom: lecturer + chevron circle
             Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween, Alignment.CenterVertically) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     if (entry.lecturer.isNotEmpty()) {

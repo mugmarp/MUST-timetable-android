@@ -38,23 +38,12 @@ private fun formatCountdown(minutes: Int): String {
     }
 }
 
-private fun sessionStyle(entry: TimetableEntry): SessionStyle {
-    val type = entry.sessionType
-    return when (type?.uppercase()) {
-        "PRACTICAL", "LAB" -> SessionStyle("Practical", Color(0xFF2E7D32))
-        "CLINICAL" -> SessionStyle("Clinical", Color(0xFFF57C00))
-        "THEORY" -> SessionStyle("Theory", Color(0xFF1565C0))
-        else -> SessionStyle("Class", Color(0xFF757575))
-    }
-}
-
-private data class SessionStyle(val label: String, val color: Color)
-
 @Composable
 fun NextUpCard(entry: TimetableEntry, minutesUntil: Int, onClick: () -> Unit) {
     val accent = MaterialTheme.colorScheme.primary
     val white90 = Color.White.copy(alpha = 0.9f)
     val pill = Color.White.copy(alpha = 0.2f)
+    val style = sessionStyle(entry)
 
     Box(
         modifier = Modifier
@@ -88,7 +77,7 @@ fun NextUpCard(entry: TimetableEntry, minutesUntil: Int, onClick: () -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(entry.courseCode, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = white90)
                 Text(
-                    sessionStyle(entry).label,
+                    style.label,
                     fontSize = 11.sp,
                     color = Color.White,
                     modifier = Modifier
